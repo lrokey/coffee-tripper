@@ -1,0 +1,65 @@
+h2{
+	text-align: center;
+}
+
+.illustrations{
+	/*border: 2px solid blue;*/
+ 	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
+.btn-success{
+	background-color: #CFC291;
+	border-color: #FFF6C5 ;
+}
+.btn-success:hover{
+     background-color: #695D46;
+     border-color: #FFF6C5;
+}
+
+.btn-lg{
+	background-color: #CFC291;
+	border-color: #FFF6C5;
+}
+
+.btn-lg:hover{
+     background-color: #FF712C;
+     border-color: #FFF6C5;
+}
+
+.img-responsive {
+	margin:0 auto;
+}
+
+.navbar-fixed-top{
+	background-color: #A1E8D9;
+}
+
+.navbar-brand{
+	color: black;
+}
+
+.navbar-inverse{
+	border: none;
+}
+
+.footer{
+	text-align: center;
+}
+
+.map-canvas{
+	background-image: url(../map_photos/map_canvas.jpg);
+	min-height:100%;
+	height: 100vh;
+    /* The Magic */
+    background-size:cover;
+    background-position: center center;
+    background-repeat: none;
+}
+
+#coffeefilters{
+	width:50px;
+	height:50px;
+}
