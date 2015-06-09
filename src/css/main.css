@@ -2,12 +2,48 @@ h2{
 	text-align: center;
 }
 
+
+html, body{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
 .illustrations{
-	/*border: 2px solid blue;*/
  	display: block;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
+/*    visibility: hidden;*/
+    z-index: 1000;
+}
+.input-field-coffee-cup{
+	height: 32px;
+	width: 40px;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+.input-group-addon{
+	padding: 0px;
+	margin: 0px;
+}
+
+.form-control{
+	padding: 0px;
+	margin: 0px;
+}
+
+.row{
+	background-color:transparent;
+	margin: 0px;
+}
+.center-block{
+	float: none;
+
 }
 
 .btn-success{
@@ -34,7 +70,7 @@ h2{
 }
 
 .navbar-fixed-top{
-	background-color: #A1E8D9;
+	background-color: #695D46;
 }
 
 .navbar-brand{
@@ -45,21 +81,82 @@ h2{
 	border: none;
 }
 
-.footer{
-	text-align: center;
+.navbar-inverse .navbar-brand {
+  color: #ff712c;
+  font-family: 'Oleo Script';
+  font-size: xx-large;
 }
 
-.map-canvas{
-	background-image: url(../map_photos/map_canvas.jpg);
-	min-height:100%;
-	height: 100vh;
-    /* The Magic */
-    background-size:cover;
-    background-position: center center;
-    background-repeat: none;
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 3em;
+  background-color: #f5f5f5;
+  text-align: center;
+  padding: 0px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.wrapper{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+
+}
+
+#map-canvas{
+    height: 100%;
+    width: 100%;
+    left: 0;
+    position: absolute;
+    top: 0; 
+    margin: 0px;
+    padding: 0px;
+	z-index: -100;
+	background-size:cover;
 }
 
 #coffeefilters{
 	width:50px;
 	height:50px;
+}
+.welcome-imgs{
+	background: none;
+}
+
+.float{
+	display: block;
+	height: 25vh;
+}
+
+#pac-input {
+        background-color: #fff;
+        font-family: Arial;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 0px;
+        padding: 0px;
+        text-overflow: ellipsis;
+        width: 300px;
+      }
+
+#pac-input:focus {
+border-color: #4d90fe;
+}
+
+#pac-input-d {
+        background-color: #fff;
+        font-family: Arial;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 0px;
+        padding: 0px;
+        text-overflow: ellipsis;
+        width: 300px;
+      }
+
+#pac-input-d:focus {
+border-color: #4d90fe;
 }
