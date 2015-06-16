@@ -30,6 +30,9 @@ h2{
 	padding: 0px;
 	margin: 0px;
 }
+.input-group{
+	width:258px;
+}
 
 .form-control{
 
@@ -41,7 +44,7 @@ h2{
 
 .row{
 	background-color:transparent;
-	margin: 0px;
+	margin: auto;
 }
 .center-block{
 	float: none;
@@ -143,7 +146,6 @@ h2{
         margin-left: 0px;
         padding: 0px;
         text-overflow: ellipsis;
-        width: 300px;
       }
 
 #pac-input:focus {
@@ -158,7 +160,6 @@ border-color: #4d90fe;
         margin-left: 0px;
         padding: 0px;
         text-overflow: ellipsis;
-        width: 300px;
       }
 
 #pac-input-d:focus {
