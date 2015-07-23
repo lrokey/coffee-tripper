@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="full" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <% stylesheet_link_tag("/stylesheets/animations") %>
+<!--   <link rel="stylesheet" href="css/animations.css"> -->
+  <link href="favicon.ico" rel="icon" type="image/x-icon" />
+
+  <title>Coffee Tripper</title>
+
+	<%= javascript_include_tag 'jquery-2.1.4' %>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+  <!-- Bootstrap Core CSS -->
+  <% stylesheet_link_tag("bootstrap") %>
+<!--   <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+
+  <!-- Main css file for coffee tripper -->
+    <% stylesheet_link_tag("main") %>
+<!--   <link rel="stylesheet" type="text/css" href="css/main.css"> -->
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Load Google Map and Places -->
+        <script 
+        type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCBTxe3dgpzr4MgzkarHu72dd1B2EyvVjM">
+        </script>
+
+
+
+        <!-- initialize map -->
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="javascript:history.go(0)">Coffee Tripper</a>
+<!--         <%= link_to 'Coffee Tripper', root_url %> -->
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <%= text_field_tag('origin_after_search', nil, class: "form-control", placeholder: 'Username') %>
+          </div>
+          <div class="form-group">
+            <%= text_field_tag('destination_after_search', nil, class: "form-control", placeholder: 'Password') %>
+          </div>
+          <%= submit_tag("Login", class: "form-control") %>
+        </form>
+      </div><!--/.navbar-collapse -->
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div id="map-canvas"></div>
+    <div class="page-header">
+      <h1 id="page-header">Enter your origin<br> and destination points. <br> <small>Then, click the coffee cup to find coffee along the way!</small></h1>
+    </div>
+
+    <%= form_tag({controller: "route_planner" , action:"search"}, method: "post", class: "form-horizontal", id:"search_form") do %>
+    <div class="row container welcome-imgs">
+      <!-- Point A -->
+      <div class="col-md-4">
+        <div class="illustrations">
+        	<%= image_tag("coffee-car.png", :class => "coffee-car") %>
+          <div id="locationField">
+            <div class="input-group">
+
+
+              <%= text_field_tag('pac-input', nil, class: "form-control", placeholder: 'Origin') %>
+
+            </div>
+          </div>
+        </div> 
+      </div>
+      <div class="col-md-4">
+        <div class="illustrations" id = "coffeecup" onclick = "calcRoute()"> 
+          <a href="#myModal" role="button" data-toggle="modal" data-backdrop="true" data-keyboard="true"> <img class ="tossing img-responsive" <%= image_tag("coffee-cup2.png", :class => "coffee-cup") %></a>
+        </div> 
+      </div>
+      <!-- Point B -->
+      <div class="col-md-4">
+        <div class="illustrations">
+        	<%= image_tag("coffee-car.png", :class => "coffee-car") %>
+          <div id="locationField">
+            <div class="input-group">
+                <%= text_field_tag('pac-input-d', nil, class: "form-control", placeholder: 'Destination') %>
+<!--               <input id = "pac-input-d" type="text" class="form-control" placeholder=" Destination"  /> -->
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <div class = "loading">
+      <%= image_tag("ripple.gif", :class => "loading-indicator") %>
+<!--       <img src="loader.gif" id="loading-indicator" style="display:none" /> -->
+      <p class="loading-text"> finding coffee for your trip </p>
+    </div>
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+
+            <fieldset>
+              <legend>Filters
+                <button type="button" id = "modal-close-btn" class="btn btn-default btn-xs" data-dismiss="modal">x</button>
+              </legend>
+              <!-- Select Basic -->
+              <div class="control-group">
+                <label class="control-label" for="selectbasic">How far off the path are you willing to travel?</label>
+                <div class="controls">
+                  <%= select_tag(:distance, options_for_select([['Not at all', 1],
+                    ['Less than 10 miles',10],
+                    ['Up to 15 miles', 15],
+                    ['Up to 20 miles', 20],
+                    ['More than 20 miles',25]]),
+                  class: "input-large")%>
+                </div>
+              </div>
+
+                <div class="control-group">
+                <label class="control-label" for="selectbasic">How often do you want to stop for coffee?</label>
+                <div class="controls">
+                  <%= select_tag(:stop_distance, options_for_select([ ['every 30 minutes', 0.5],
+                    ['every hour', 1],
+                    ['every 2 hours', 2],
+                    ['every 3 hours',3],
+                    ['every 4 hours', 4],]),
+                  class: "input-large")%>
+                </div>
+              </div>
+
+              <!-- Multiple Radios (inline) -->
+              <div class="control-group">
+                <label class="control-label" for="radios">How fancy of coffee?</label>
+                <div class="controls">
+                  <%= radio_button_tag(:rating, "1") %>
+                  <%= label_tag(:rating_onestar, "★") %>
+
+                  <%= radio_button_tag(:rating, "2") %>
+                  <%= label_tag(:rating_twostar, "★★") %>
+
+                  <%= radio_button_tag(:rating, "3") %>
+                  <%= label_tag(:rating_threestar, "★★★") %>
+
+                  <%= radio_button_tag(:rating, "4") %>
+                  <%= label_tag(:rating_fourstar, "★★★★") %>
+
+                  <%= radio_button_tag(:rating, "5") %>
+                  <%= label_tag(:rating_fivestar, "★★★★★") %>
+
+                </div>
+              </div>
+              <!-- Button -->
+              <div class="control-group">
+                <label class="control-label" for="singlebutton">Ready to go?</label>
+                <div class="controls">
+                  <%= submit_tag("Find Coffee", class: "btn btn-primary") %>
+                </div>
+              </div>
+
+            </fieldset>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">© Laura Rokey 2015</p>
+  </div>
+</footer>
+
+<!-- jQuery -->
+<!-- jQuery library -->
+
+<script>
+$("#search_form").submit(function() {
+    console.log("inside search form submit")
+    var url = "route_planner/search"; 
+    $('.loading').show();
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: $("#search_form").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               // alert('ok');
+               console.log(data);
+               for (i = 0; i < data.length; i++){
+                  placeMarkers(data[i]['hash']['location']['coordinate']['latitude'], data[i]['hash']['location']['coordinate']['longitude'], data[i]['hash']['name'], data[i]['hash']['display_phone'], data[i]['hash']['rating'], data[i]['hash']['location']['display_address'] );
+               }
+            $('.loading').hide();
+            $( '#map-canvas' ).fadeTo( "fast", $('#map-canvas').css("opacity") == "1" ? "0.5" : "1");
+           }
+         });
+    $('#myModal').modal('hide');
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+    return false; // avoid to execute the actual submit of the form.
+});
+$('#pac-input-d').keypress(function(e) {
+    if (e.which == '13') {
+
+        $('#myModal').modal('show');
+        calcRoute();
+              $(".illustrations").hide(1000);
+      $("#page-header").hide(1000);
+        return false;
+    }
+});
+$(".navbar-brand").click(function(){
+  console.log("made it");
+  $(document).trigger("ready");
+});
+</script>
+
+<!-- Bootstrap Core JavaScript -->
+<%= javascript_include_tag 'bootstrap' %>
+
+	<%= javascript_include_tag 'thescript', 'data-no-turbolink' => true %>
+</body>
+
+</html>
