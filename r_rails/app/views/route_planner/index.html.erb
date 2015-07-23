@@ -72,6 +72,7 @@
         <!-- Page Content -->
         <div id="map-canvas"></div>
         <div class="page-header">
+          <div class = "float"></div>
           <h1 id="page-header">Enter your origin<br> and destination points. <br> <small>Then, click the coffee cup to find coffee along the way!</small></h1>
         </div>
         <%= form_tag({controller: "route_planner" , action:"search"}, method: "post", class: "form-horizontal", id:"search_form") do %>
